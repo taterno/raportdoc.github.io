@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Угадайте пароль</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h2>Угадайте 5-значный пароль</h2>
+<div id="password"></div>
+<input type="text" id="guess" maxlength="5">
+<button onclick="checkGuess()">Проверить</button>
+<div id="hint"></div>
+
+<script>
+    var password = generatePassword();
+    var attempts = 0;
+
+    function generatePassword() {
+        var password = '';
+        for (var i = 0; i < 5; i++) {
+            password += Math.floor(Math.random() * 10);
+        }
+        return password;
+    }
+
+    function checkGuess() {
+        var guess = document.getElementById('guess').value;
+        attempts++;
+
+        if (guess.length !== 5 || isNaN(guess)) {
+            alert('Пожалуйста, введите 5-значное число.');
+            return;
+        }
+
+        var hint = document.getElementById('hint');
+        if (guess === password) {
+            hint.textContent = 'Поздравляем! Вы угадали пароль за ' + attempts + ' попыток.';
+            downloadFile();
+        } else {
+            var hintMessage = guess < password ? 'Больше' : 'Меньше';
+            hint.textContent = hintMessage + ' чем загаданный пароль.';
+        }
+    }
+
+    function downloadFile() {
+        var link = document.createElement('a');
+        link.href = 'doc.docx';
+        link.download = 'doc.docx';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+</body>
+</html>
